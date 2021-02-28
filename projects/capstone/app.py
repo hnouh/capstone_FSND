@@ -5,14 +5,15 @@ from flask_cors import CORS
 from auth.auth import AuthError, requires_auth
 from models import setup_db, Movie, Actor
 
+
 def create_app(test_config=None):
     # create and configure the app
-    app = Flask(__name__) 
+    app = Flask(__name__)
     setup_db(app)
-    
+
     # CORS app
     cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
- 
+
     # CORS Headers
     @app.after_request
     def after_request(response):
@@ -21,7 +22,7 @@ def create_app(test_config=None):
         response.headers.add('Access-Control-Allow-Methods',
                              'GET,PATCH,POST,DELETE,OPTIONS')
         return response
- 
+
     # ROUTES
     '''
     implement endpoint
@@ -71,13 +72,13 @@ def create_app(test_config=None):
     @requires_auth('post:actors')
     def create_new_actor(jwt):
         body = request.get_json()
-    
+
         new_name = body.get('name', None)
         new_age = body.get('age', None)
         new_gender = body.get('gender', None)
 
         try:
-            actor = Actor(name= new_name, age= new_age, gender= new_gender)
+            actor = Actor(name=new_name, age=new_age, gender=new_gender)
             actor.insert()
 
             return jsonify({
@@ -99,7 +100,7 @@ def create_app(test_config=None):
         body = request.get_json()
 
         new_title = body.get('title', None)
-        new_releaseDate = body.get('releaseDate', None) 
+        new_releaseDate = body.get('releaseDate', None)
 
         try:
             movie = Movie(title=new_title, releaseDate=new_releaseDate)
@@ -137,7 +138,7 @@ def create_app(test_config=None):
                 actor.age = body.get('age')
             if 'gender' in body:
                 actor.gender = body.get('gender')
-            
+
             actor.update()
 
             return jsonify({
@@ -153,7 +154,6 @@ def create_app(test_config=None):
         returns status code 200 and json {"success": True, "movies": movie} where movie an array containing only the updated movie
             or appropriate status code indicating reason for failure
     '''
-
 
     @app.route('/movies/<int:movie_id>', methods=['PATCH'])
     @requires_auth('patch:movies')
@@ -171,7 +171,7 @@ def create_app(test_config=None):
                 movie.title = body.get('title')
             if 'releaseDate' in body:
                 movie.releaseDate = body.get('releaseDate')
-    
+
             movie.update()
 
             return jsonify({
@@ -181,7 +181,6 @@ def create_app(test_config=None):
 
         except Exception:
             abort(400)
-
 
     '''
         DELETE /actors/<id>
@@ -239,7 +238,7 @@ def create_app(test_config=None):
         except Exception:
             abort(422)
 
-    # Error Handling 
+    # Error Handling
     @app.errorhandler(400)
     def bad_request(error):
         return jsonify({
@@ -256,14 +255,13 @@ def create_app(test_config=None):
             "message": "resource not found"
         }), 404
 
-
     @app.errorhandler(405)
     def not_allowed(error):
         return jsonify({
             "success": False,
             "error": 405,
             "message": "method not allowed"
-        }), 405 
+        }), 405
 
     @app.errorhandler(422)
     def unprocessable(error):
@@ -271,7 +269,7 @@ def create_app(test_config=None):
             "success": False,
             "error": 422,
             "message": "unprocessable"
-        }), 422 
+        }), 422
 
     @app.errorhandler(AuthError)
     def handle_auth_error(ex):
@@ -280,6 +278,8 @@ def create_app(test_config=None):
         return response
 
     return app
+
+
 #----------------------------------------------------------------------------#
 # Launch.
 #----------------------------------------------------------------------------#

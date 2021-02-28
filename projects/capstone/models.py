@@ -1,7 +1,7 @@
 import os
-from sqlalchemy import Column, String, Integer, create_engine,DateTime,ForeignKey
+from sqlalchemy import Column, String, Integer, create_engine, DateTime, ForeignKey
 from flask_sqlalchemy import SQLAlchemy
-import json 
+import json
 from flask_migrate import Migrate
 from flask import Flask
 
@@ -13,17 +13,20 @@ from flask import Flask
 # database_password = os.getenv('DB_PASSWORD', 'Ar648898')
 # database_name = os.getenv('DB_NAME', 'CastingAgency')
 database_path = 'postgres://naogqmhsxmzeuo:b7caf81f5e3c5629346356fc2f0e96c0ceb835acb306a45db94c86c26c0b5bff@ec2-54-220-35-19.eu-west-1.compute.amazonaws.com:5432/ddstbpre9t8qo0'
-db = SQLAlchemy()   
+db = SQLAlchemy()
 
 '''
 setup_db(app)
     binds a flask application and a SQLAlchemy service
 '''
+
+
 def setup_db(app, database_path=database_path):
     app.config["SQLALCHEMY_DATABASE_URI"] = database_path
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-    db.app = app 
-    db.init_app(app) 
+    db.app = app
+    db.init_app(app)
+
 
 class Role(db.Model):
     __tablename__ = 'Role'
@@ -32,9 +35,12 @@ class Role(db.Model):
     actor_id = Column(Integer, ForeignKey('Actor.id'), nullable=False)
     movie_id = Column(Integer, ForeignKey('Movie.id'), nullable=False)
 
+
 '''
 Actor
 '''
+
+
 class Actor(db.Model):
     __tablename__ = 'Actor'
 
@@ -72,9 +78,12 @@ class Actor(db.Model):
         db.session.delete(self)
         db.session.commit()
 
+
 '''
 Movie
 '''
+
+
 class Movie(db.Model):
     __tablename__ = 'Movie'
 
