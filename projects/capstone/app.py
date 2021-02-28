@@ -204,7 +204,7 @@ def create_app(test_config=None):
 
             return jsonify({
                 'success': True,
-                'delete': actor_id
+                'deleted': actor_id
             }), 200
 
         except Exception:
@@ -232,7 +232,7 @@ def create_app(test_config=None):
 
             return jsonify({
                 'success': True,
-                'delete': movie_id
+                'deleted': movie_id
             }), 200
 
         except Exception:
