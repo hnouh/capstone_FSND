@@ -9,6 +9,11 @@ Casting Agency app :
 3) Edit actors & movies. 
 4) Delete actors & movies..
 
+**Install the dependencies:**
+```
+pip install -r requirements.txt
+```
+
 ### Tests
 
 ```
