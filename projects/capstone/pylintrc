@@ -1,0 +1,4 @@
+ignored-classes=SQLObject,Registrant,scoped_session
+[MASTER]
+disable=
+    C0114, # missing-module-docstring
